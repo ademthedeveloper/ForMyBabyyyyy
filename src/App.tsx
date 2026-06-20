@@ -3,8 +3,6 @@ import React, { useState, useEffect, useCallback, useMemo, useRef } from 'react'
 type Scene = 'intro' | 'envelope' | 'letter';
 
 const ENVELOPE_PIN = '0521';
-// 🎵 BACKGROUND MUSIC LINK - You can change this to any direct .mp3 link
-const BG_MUSIC_URL = 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3';
 
 const letterParagraphs = [
   { text: "💌 My baby ❤️", type: 'title' as const },
@@ -435,7 +433,7 @@ function TypewriterText({
           className="inline-block ml-[2px] text-rose-400"
           style={{ animation: 'blink 1s step-end infinite' }}
         >
-          |
+
         </span>
       )}
     </span>
@@ -514,104 +512,6 @@ function LoveLetterSection() {
             <div className="h-[1px] w-20 bg-gradient-to-l from-transparent to-rose-500/50" />
           </div>
         </div>
-      </div>
-    </section>
-  );
-}
-
-/* ================================================================
-   PHOTO GALLERY
-   ================================================================ */
-function PhotoCard({
-  src,
-  label,
-  gradient,
-}: {
-  src: string;
-  label: string;
-  gradient: string;
-}) {
-  const [imgError, setImgError] = useState(false);
-  const baseUrl = import.meta.env.BASE_URL || '/';
-  const finalSrc = src.startsWith('http') ? src : `${baseUrl}${src}`.replace(/\/\/+/g, '/');
-
-  return (
-    <div className="group relative overflow-hidden rounded-2xl cursor-pointer animate-photo-glow bg-white/5 border border-white/10">
-      <div className={`relative flex flex-col ${gradient}`}>
-        {!imgError ? (
-          <img
-            src={finalSrc}
-            alt={label}
-            className="w-full h-auto block transition-transform duration-700 ease-out group-hover:scale-105"
-            style={{ minHeight: '200px' }}
-            loading="lazy"
-            onError={() => setImgError(true)}
-          />
-        ) : (
-          <div className="flex flex-col items-center justify-center p-12 bg-rose-950/20 min-h-[300px]">
-            <span className="text-5xl mb-3">📸</span>
-            <span className="font-dancing text-rose-300/60 text-base">Image not found</span>
-          </div>
-        )}
-
-        {/* Gradient overlay */}
-        <div className="absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-black/80 to-transparent opacity-80" />
-
-        {/* Label */}
-        <div className="absolute bottom-0 left-0 right-0 p-4">
-          <p className="font-dancing text-lg md:text-xl text-rose-100 text-center drop-shadow-lg">
-            {label}
-          </p>
-        </div>
-      </div>
-    </div>
-  );
-}
-
-function PhotoGallery() {
-  const [visible, setVisible] = useState(false);
-
-  useEffect(() => {
-    const timer = setTimeout(() => setVisible(true), 500);
-    return () => clearTimeout(timer);
-  }, []);
-
-  const photos = [
-    { src: 'IMG-20260526-WA0096.jpg', label: 'Our First Memory', gradient: 'bg-gradient-to-br from-rose-950/40 via-pink-900/20 to-purple-950/40' },
-    { src: 'IMG-20260611-WA0006.jpg', label: 'Our Adventure', gradient: 'bg-gradient-to-br from-purple-950/40 via-indigo-900/20 to-blue-950/40' },
-    { src: 'IMG-20260611-WA0008.jpg', label: 'Us Together', gradient: 'bg-gradient-to-br from-red-950/40 via-rose-900/20 to-pink-950/40' },
-  ];
-
-  return (
-    <section className="py-24 flex flex-col items-center justify-center px-5">
-      <h3
-        className="font-playfair text-2xl md:text-3xl text-white/85 mb-14 text-center"
-        style={{
-          opacity: visible ? 1 : 0,
-          transform: visible ? 'translateY(0)' : 'translateY(20px)',
-          transition: 'all 1s ease-out',
-        }}
-      >
-        Our Moments
-      </h3>
-
-      <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 md:gap-8 max-w-4xl w-full">
-        {photos.map((photo, i) => (
-          <div
-            key={i}
-            style={{
-              opacity: visible ? 1 : 0,
-              transform: visible ? 'translateY(0)' : 'translateY(30px)',
-              transition: `all 0.8s ease-out ${0.3 + i * 0.2}s`,
-            }}
-          >
-            <PhotoCard
-              src={photo.src}
-              label={photo.label}
-              gradient={photo.gradient}
-            />
-          </div>
-        ))}
       </div>
     </section>
   );
@@ -700,7 +600,6 @@ export default function App() {
   const [scene, setScene] = useState<Scene>('intro');
   const [transitioning, setTransitioning] = useState(false);
   const [isStarted, setIsStarted] = useState(false);
-  const audioRef = useRef<HTMLAudioElement | null>(null);
 
   const transitionTo = useCallback((newScene: Scene) => {
     setTransitioning(true);
@@ -713,9 +612,6 @@ export default function App() {
 
   const handleStart = () => {
     setIsStarted(true);
-    if (audioRef.current) {
-      audioRef.current.play().catch(e => console.error("Audio play failed:", e));
-    }
   };
 
   const handleIntroComplete = useCallback(() => {
@@ -728,13 +624,6 @@ export default function App() {
 
   return (
     <div className="relative min-h-screen bg-black overflow-x-hidden">
-      {/* Background Music */}
-      <audio
-        ref={audioRef}
-        src={BG_MUSIC_URL}
-        loop
-      />
-
       {!isStarted && (
         <div className="fixed inset-0 z-[200] bg-black flex items-center justify-center">
           <button
@@ -782,7 +671,6 @@ export default function App() {
 
             <div className="relative z-10">
               <LoveLetterSection />
-              <PhotoGallery />
               <MusicButton />
               <Footer />
             </div>
