@@ -27,9 +27,6 @@ const letterParagraphs = [
   { text: "With all my love,\nAdam ❤️", type: 'signature' as const },
 ];
 
-/* ================================================================
-   THEATER CURTAINS
-   ================================================================ */
 function TheaterCurtains({ isOpen }: { isOpen: boolean }) {
   return (
     <div className="fixed inset-0 pointer-events-none z-[150] flex overflow-hidden">
@@ -55,18 +52,15 @@ function TheaterCurtains({ isOpen }: { isOpen: boolean }) {
   );
 }
 
-/* ================================================================
-   FLOATING HEARTS
-   ================================================================ */
 function FloatingHearts() {
   const hearts = useMemo(() => {
-    return Array.from({ length: 15 }, (_, i) => ({
+    return Array.from({ length: 10 }, (_, i) => ({
       id: i,
       left: Math.random() * 100,
       delay: Math.random() * 5,
-      duration: 5 + Math.random() * 5,
+      duration: 6 + Math.random() * 6,
       size: 1 + Math.random() * 1,
-      emoji: ['❤️', '💕', '💖', '💗'][Math.floor(Math.random() * 4)],
+      emoji: ['❤️', '💖', '💗'][Math.floor(Math.random() * 3)],
     }));
   }, []);
 
@@ -75,7 +69,7 @@ function FloatingHearts() {
       {hearts.map((heart) => (
         <div
           key={heart.id}
-          className="absolute text-rose-500 animate-bounce"
+          className="absolute"
           style={{
             left: `${heart.left}%`,
             bottom: '-50px',
@@ -98,40 +92,34 @@ function FloatingHearts() {
   );
 }
 
-/* ================================================================
-   CINEMATIC INTRO
-   ================================================================ */
-function CinematicIntro({ onComplete }: { onComplete: () => void }) {
-  useEffect(() => {
-    const timer = setTimeout(onComplete, 5000);
-    return () => clearTimeout(timer);
-  }, [onComplete]);
-
-  return (
-    <div className="fixed inset-0 flex flex-col items-center justify-center p-6 text-center">
-      <h1 className="font-playfair text-3xl md:text-5xl text-white mb-4">
-        A Love Story Experience
-      </h1>
-      <p className="font-inter text-lg text-white/60 tracking-widest uppercase">
-        Made with love
-      </p>
-    </div>
-  );
-}
-
-/* ================================================================
-   ENVELOPE SCENE
-   ================================================================ */
-function EnvelopeScene({ onOpen }: { onOpen: () => void }) {
+export default function App() {
+  const [isStarted, setIsStarted] = useState(false);
+  const [scene, setScene] = useState<Scene>('intro');
+  const [curtainsOpen, setCurtainsOpen] = useState(false);
   const [pin, setPin] = useState('');
   const [isWrong, setIsWrong] = useState(false);
 
-  const handleInput = (val: string) => {
+  const nextScene = useCallback((next: Scene) => {
+    setCurtainsOpen(false);
+    setTimeout(() => {
+      setScene(next);
+      setTimeout(() => setCurtainsOpen(true), 500);
+    }, 2200);
+  }, []);
+
+  useEffect(() => {
+    if (isStarted && scene === 'intro') {
+      const timer = setTimeout(() => nextScene('envelope'), 5000);
+      return () => clearTimeout(timer);
+    }
+  }, [isStarted, scene, nextScene]);
+
+  const handlePinInput = (val: string) => {
     const clean = val.replace(/[^0-9]/g, '').slice(0, 4);
     setPin(clean);
     if (clean.length === 4) {
       if (clean === ENVELOPE_PIN) {
-        onOpen();
+        nextScene('letter');
       } else {
         setIsWrong(true);
         setTimeout(() => {
@@ -143,98 +131,70 @@ function EnvelopeScene({ onOpen }: { onOpen: () => void }) {
   };
 
   return (
-    <div className="fixed inset-0 flex flex-col items-center justify-center p-6">
-      <div className={`mb-12 text-6xl transition-transform ${isWrong ? 'animate-shake' : ''}`}>
-        {pin.length === 4 && pin === ENVELOPE_PIN ? '❤️' : '🔒'}
-      </div>
-
-      <div className="flex gap-4 mb-8">
-        {[0, 1, 2, 3].map(i => (
-          <div key={i} className={`w-12 h-16 border-2 rounded-xl flex items-center justify-center text-2xl ${pin.length > i ? 'border-rose-500 bg-rose-500/10' : 'border-white/20'}`}>
-            {pin.length > i ? '●' : ''}
-          </div>
-        ))}
-      </div>
-
-      <input
-        type="tel"
-        inputMode="numeric"
-        autoFocus
-        value={pin}
-        onChange={(e) => handleInput(e.target.value)}
-        className="absolute inset-0 w-full h-full opacity-0 cursor-default"
-      />
-
-      <p className="font-dancing text-2xl text-rose-300">Enter PIN to open</p>
-
-      <style>{`
-        @keyframes shake {
-          0%, 100% { transform: translateX(0); }
-          25% { transform: translateX(-10px); }
-          75% { transform: translateX(10px); }
-        }
-        .animate-shake { animation: shake 0.2s ease-in-out infinite; }
-      `}</style>
-    </div>
-  );
-}
-
-/* ================================================================
-   LOVE LETTER SECTION
-   ================================================================ */
-function LoveLetterSection() {
-  return (
-    <div className="min-h-screen w-full overflow-y-auto px-6 py-24 flex flex-col items-center">
-      <h2 className="font-dancing text-4xl text-rose-300 mb-12">My Dearest,</h2>
-      {letterParagraphs.map((para, i) => (
-        <p key={i} className={`mb-8 text-center text-lg leading-relaxed ${para.type === 'title' ? 'text-2xl text-rose-400 font-bold' : 'text-white/80'}`}>
-          {para.text}
-        </p>
-      ))}
-    </div>
-  );
-}
-
-/* ================================================================
-   MAIN APP
-   ================================================================ */
-export default function App() {
-  const [isStarted, setIsStarted] = useState(false);
-  const [scene, setScene] = useState<Scene>('intro');
-  const [curtainsOpen, setCurtainsOpen] = useState(false);
-
-  const handleStart = () => {
-    setIsStarted(true);
-    setTimeout(() => setCurtainsOpen(true), 500);
-  };
-
-  const nextScene = (next: Scene) => {
-    setCurtainsOpen(false);
-    setTimeout(() => {
-      setScene(next);
-      setTimeout(() => setCurtainsOpen(true), 500);
-    }, 2500);
-  };
-
-  return (
-    <div className="w-full h-full min-h-screen bg-black text-white font-inter">
+    <div className="fixed inset-0 bg-black text-white font-inter overflow-hidden">
       <TheaterCurtains isOpen={curtainsOpen} />
 
       {!isStarted ? (
-        <div className="fixed inset-0 flex items-center justify-center z-[200] bg-black">
+        <div className="absolute inset-0 flex items-center justify-center z-[200] bg-black">
           <button
-            onClick={handleStart}
-            className="px-10 py-4 rounded-full border-2 border-rose-500 text-rose-100 text-lg uppercase tracking-widest font-bold"
+            onClick={() => {
+              setIsStarted(true);
+              setTimeout(() => setCurtainsOpen(true), 500);
+            }}
+            className="px-10 py-4 rounded-full border-2 border-rose-500 text-white text-lg uppercase tracking-widest font-bold bg-rose-500/10 shadow-[0_0_20px_rgba(244,63,94,0.3)] active:scale-95 transition-transform"
           >
             Begin Experience
           </button>
         </div>
       ) : (
-        <div className="relative w-full h-full min-h-screen">
+        <div className="relative w-full h-full">
           <FloatingHearts />
-          {scene === 'intro' && <CinematicIntro onComplete={() => nextScene('envelope')} />}
-          {scene === 'envelope' && <EnvelopeScene onOpen={() => nextScene('letter')} />}
-          {scene === 'letter' && <LoveLetterSection />}
+
+          {scene === 'intro' && (
+            <div className="absolute inset-0 flex flex-col items-center justify-center p-6 text-center">
+              <h1 className="font-playfair text-3xl md:text-5xl mb-4">A Love Story Experience</h1>
+              <p className="text-white/60 tracking-widest uppercase">Made with love</p>
+            </div>
+          )}
+
+          {scene === 'envelope' && (
+            <div className="absolute inset-0 flex flex-col items-center justify-center p-6">
+              <div className={`mb-12 text-6xl ${isWrong ? 'animate-shake' : ''}`}>
+                {pin.length === 4 && pin === ENVELOPE_PIN ? '❤️' : '🔒'}
+              </div>
+              <div className="flex gap-4 mb-8">
+                {[0, 1, 2, 3].map(i => (
+                  <div key={i} className={`w-12 h-16 border-2 rounded-xl flex items-center justify-center text-2xl ${pin.length > i ? 'border-rose-500 bg-rose-500/10' : 'border-white/20'}`}>
+                    {pin.length > i ? '●' : ''}
+                  </div>
+                ))}
+              </div>
+              <input
+                type="tel"
+                inputMode="numeric"
+                autoFocus
+                value={pin}
+                onChange={(e) => handlePinInput(e.target.value)}
+                className="absolute inset-0 w-full h-full opacity-0 cursor-default"
+              />
+              <p className="font-dancing text-2xl text-rose-300">Enter PIN to open</p>
+              <style>{`
+                @keyframes shake { 0%, 100% { transform: translateX(0); } 25% { transform: translateX(-10px); } 75% { transform: translateX(10px); } }
+                .animate-shake { animation: shake 0.2s ease-in-out infinite; }
+              `}</style>
+            </div>
+          )}
+
+          {scene === 'letter' && (
+            <div className="absolute inset-0 overflow-y-auto px-6 py-24 flex flex-col items-center">
+              <h2 className="font-dancing text-4xl text-rose-300 mb-12">My Dearest,</h2>
+              {letterParagraphs.map((para, i) => (
+                <p key={i} className={`mb-8 text-center text-lg leading-relaxed ${para.type === 'title' ? 'text-2xl text-rose-400 font-bold' : 'text-white/80'}`}>
+                  {para.text}
+                </p>
+              ))}
+            </div>
+          )}
         </div>
       )}
     </div>
