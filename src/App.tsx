@@ -27,9 +27,6 @@ const letterParagraphs = [
   { text: "With all my love,\nAdam ❤️", type: 'signature' as const },
 ];
 
-/* ================================================================
-   THEATER CURTAINS
-   ================================================================ */
 function TheaterCurtains({ isOpen }: { isOpen: boolean }) {
   return (
     <div className="fixed inset-0 pointer-events-none z-[150] flex overflow-hidden">
@@ -63,9 +60,6 @@ function TheaterCurtains({ isOpen }: { isOpen: boolean }) {
   );
 }
 
-/* ================================================================
-   FLOATING HEARTS
-   ================================================================ */
 function FloatingHearts({ count = 10 }) {
   const hearts = useMemo(() => {
     return Array.from({ length: count }, (_, i) => ({
@@ -103,9 +97,6 @@ function FloatingHearts({ count = 10 }) {
   );
 }
 
-/* ================================================================
-   PARTICLES / SPARKLES
-   ================================================================ */
 function Particles() {
   const particles = useMemo(() => {
     return Array.from({ length: 50 }, (_, i) => ({
@@ -141,9 +132,6 @@ function Particles() {
   );
 }
 
-/* ================================================================
-   CINEMATIC INTRO
-   ================================================================ */
 function CinematicIntro({ onComplete }: { onComplete: () => void }) {
   const [phase, setPhase] = useState<'waiting' | 'title' | 'subtitle' | 'progress' | 'done'>('waiting');
 
@@ -196,9 +184,6 @@ function CinematicIntro({ onComplete }: { onComplete: () => void }) {
   );
 }
 
-/* ================================================================
-   ENVELOPE SCENE
-   ================================================================ */
 function EnvelopeScene({ onOpen }: { onOpen: () => void }) {
   const [isOpen, setIsOpen] = useState(false);
   const [rawInput, setRawInput] = useState('');
@@ -250,9 +235,6 @@ function EnvelopeScene({ onOpen }: { onOpen: () => void }) {
   );
 }
 
-/* ================================================================
-   TYPEWRITER TEXT
-   ================================================================ */
 function TypewriterText({ text, speed = 65, onComplete }: { text: string, speed?: number, onComplete?: () => void }) {
   const [displayed, setDisplayed] = useState('');
   const [complete, setComplete] = useState(false);
@@ -277,9 +259,6 @@ function TypewriterText({ text, speed = 65, onComplete }: { text: string, speed?
   );
 }
 
-/* ================================================================
-   LOVE LETTER SECTION
-   ================================================================ */
 function LoveLetterSection() {
   const [started, setStarted] = useState(false);
 
@@ -313,9 +292,6 @@ function LoveLetterSection() {
   );
 }
 
-/* ================================================================
-   MAIN APP
-   ================================================================ */
 export default function App() {
   const [scene, setScene] = useState<Scene>('intro');
   const [isStarted, setIsStarted] = useState(false);

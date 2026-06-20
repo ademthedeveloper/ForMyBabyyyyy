@@ -4,7 +4,6 @@ import tailwindcss from "@tailwindcss/vite";
 import path from "path";
 
 export default defineConfig({
-  // Use the exact repository name for guaranteed GitHub Pages loading
   base: "/ForMyBabyyyyy/",
   plugins: [react(), tailwindcss()],
   resolve: {
@@ -15,7 +14,5 @@ export default defineConfig({
   build: {
     outDir: "dist",
     assetsDir: "assets",
-    minify: "esbuild",
-    sourcemap: false,
   },
 });
