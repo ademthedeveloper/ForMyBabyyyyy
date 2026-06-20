@@ -3,6 +3,8 @@ import React, { useState, useEffect, useCallback, useMemo, useRef } from 'react'
 type Scene = 'intro' | 'envelope' | 'letter';
 
 const ENVELOPE_PIN = '0521';
+// 🎵 BACKGROUND MUSIC LINK - You can change this to any direct .mp3 link
+const BG_MUSIC_URL = 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3';
 
 const letterParagraphs = [
   { text: "💌 My baby ❤️", type: 'title' as const },
@@ -530,8 +532,6 @@ function PhotoCard({
   gradient: string;
 }) {
   const [imgError, setImgError] = useState(false);
-
-  // Use a reliable way to get the base URL
   const baseUrl = import.meta.env.BASE_URL || '/';
   const finalSrc = src.startsWith('http') ? src : `${baseUrl}${src}`.replace(/\/\/+/g, '/');
 
@@ -627,7 +627,7 @@ function MusicButton() {
   // 🎵 TO CHANGE THE SONG LINK:
   // Change the href below to any YouTube or Spotify URL you want
   // ============================================================
-  const songUrl = 'https://www.youtube.com/watch?v=2Vv-BfVoq4g';
+  const songUrl = 'https://www.youtube.com/watch?v=VF-FGf_ZZiI';
 
   return (
     <section className="py-16 flex flex-col items-center justify-center px-5">
@@ -699,6 +699,8 @@ function Footer() {
 export default function App() {
   const [scene, setScene] = useState<Scene>('intro');
   const [transitioning, setTransitioning] = useState(false);
+  const [isStarted, setIsStarted] = useState(false);
+  const audioRef = useRef<HTMLAudioElement | null>(null);
 
   const transitionTo = useCallback((newScene: Scene) => {
     setTransitioning(true);
@@ -708,6 +710,13 @@ export default function App() {
       setTimeout(() => setTransitioning(false), 100);
     }, 1200);
   }, []);
+
+  const handleStart = () => {
+    setIsStarted(true);
+    if (audioRef.current) {
+      audioRef.current.play().catch(e => console.error("Audio play failed:", e));
+    }
+  };
 
   const handleIntroComplete = useCallback(() => {
     transitionTo('envelope');
@@ -719,20 +728,41 @@ export default function App() {
 
   return (
     <div className="relative min-h-screen bg-black overflow-x-hidden">
+      {/* Background Music */}
+      <audio
+        ref={audioRef}
+        src={BG_MUSIC_URL}
+        loop
+      />
+
+      {!isStarted && (
+        <div className="fixed inset-0 z-[200] bg-black flex items-center justify-center">
+          <button
+            onClick={handleStart}
+            className="group relative px-12 py-5 rounded-full glass-card border-rose-500/30 overflow-hidden transition-all duration-500 hover:scale-110 active:scale-95"
+          >
+            <div className="absolute inset-0 bg-gradient-to-r from-rose-500/20 to-pink-500/20 opacity-0 group-hover:opacity-100 transition-opacity" />
+            <span className="relative font-inter text-rose-200 text-lg tracking-[0.2em] uppercase">
+              Begin Experience
+            </span>
+          </button>
+        </div>
+      )}
+
       {/* Global subtle hearts */}
-      {scene !== 'intro' && <FloatingHearts count={5} />}
+      {isStarted && scene !== 'intro' && <FloatingHearts count={5} />}
 
       {/* Main scene */}
       <div
         style={{
-          opacity: transitioning ? 0 : 1,
+          opacity: (transitioning || !isStarted) ? 0 : 1,
           transition: 'opacity 1.2s ease-in-out',
         }}
       >
-        {scene === 'intro' && <CinematicIntro onComplete={handleIntroComplete} />}
-        {scene === 'envelope' && <EnvelopeScene onOpen={handleEnvelopeOpen} />}
+        {isStarted && scene === 'intro' && <CinematicIntro onComplete={handleIntroComplete} />}
+        {isStarted && scene === 'envelope' && <EnvelopeScene onOpen={handleEnvelopeOpen} />}
 
-        {scene === 'letter' && (
+        {isStarted && scene === 'letter' && (
           <div
             className="relative min-h-screen"
             style={{
