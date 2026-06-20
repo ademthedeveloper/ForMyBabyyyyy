@@ -298,7 +298,6 @@ function EnvelopeScene({ onOpen }: { onOpen: () => void }) {
             className="absolute left-1/2 -translate-x-1/2 z-30 drop-shadow-2xl transition-all duration-700"
             style={{
               top: isOpen ? '20%' : '45%',
-              opacity: transitioning ? 0 : 1,
             }}
           >
             {isOpen ? (
