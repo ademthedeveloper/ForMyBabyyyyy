@@ -16,6 +16,7 @@ export default defineConfig({
   build: {
     outDir: "dist",
     assetsDir: "assets",
-    minify: "terser", // More thorough minification
+    // Use esbuild (default) instead of terser to avoid missing dependency error
+    minify: "esbuild",
   },
 });
