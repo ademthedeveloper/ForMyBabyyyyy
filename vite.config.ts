@@ -3,10 +3,9 @@ import react from "@vitejs/plugin-react";
 import tailwindcss from "@tailwindcss/vite";
 import path from "path";
 
-// https://vitejs.dev/config/
 export default defineConfig({
-  // Use relative base for the absolute highest compatibility on all devices
-  base: "./",
+  // Exact repository name for GitHub Pages stability
+  base: "/ForMyBabyyyyy/",
   plugins: [react(), tailwindcss()],
   resolve: {
     alias: {
@@ -16,7 +15,6 @@ export default defineConfig({
   build: {
     outDir: "dist",
     assetsDir: "assets",
-    emptyOutDir: true,
     sourcemap: false,
   },
 });
