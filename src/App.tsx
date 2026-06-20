@@ -99,6 +99,10 @@ export default function App() {
   const [pin, setPin] = useState('');
   const [isWrong, setIsWrong] = useState(false);
 
+  useEffect(() => {
+    console.log("Love Story App Loaded. Ready for Begin.");
+  }, []);
+
   const nextScene = useCallback((next: Scene) => {
     setCurtainsOpen(false);
     setTimeout(() => {
@@ -132,17 +136,18 @@ export default function App() {
   };
 
   return (
-    <div className="fixed inset-0 bg-black text-white font-inter overflow-hidden">
+    <div className="fixed inset-0 bg-black text-white font-inter overflow-hidden flex items-center justify-center">
       <TheaterCurtains isOpen={curtainsOpen} />
 
       {!isStarted ? (
-        <div className="absolute inset-0 flex items-center justify-center z-[200] bg-black">
+        <div className="fixed inset-0 flex items-center justify-center z-[200] bg-black">
           <button
             onClick={() => {
+              console.log("Experience Started!");
               setIsStarted(true);
               setTimeout(() => setCurtainsOpen(true), 500);
             }}
-            className="px-10 py-4 rounded-full border-2 border-rose-500 text-white text-lg uppercase tracking-widest font-bold bg-rose-500/10 shadow-[0_0_30px_rgba(244,63,94,0.4)] active:scale-95 transition-all"
+            className="px-10 py-5 rounded-full border-2 border-rose-400 text-rose-100 text-xl uppercase tracking-widest font-bold bg-rose-500/20 shadow-[0_0_30px_rgba(244,63,94,0.4)] active:scale-95 transition-all cursor-pointer"
           >
             Begin Experience
           </button>
@@ -154,7 +159,7 @@ export default function App() {
           {scene === 'intro' && (
             <div className="absolute inset-0 flex flex-col items-center justify-center p-6 text-center">
               <h1 className="font-playfair text-3xl md:text-5xl mb-4">A Love Story Experience</h1>
-              <p className="text-white/60 tracking-widest uppercase">Made with love</p>
+              <p className="text-white/60 tracking-widest uppercase text-sm">Made with love</p>
             </div>
           )}
 
@@ -187,7 +192,7 @@ export default function App() {
           )}
 
           {scene === 'letter' && (
-            <div className="absolute inset-0 overflow-y-auto px-6 py-24 flex flex-col items-center">
+            <div className="absolute inset-0 overflow-y-auto px-6 py-24 flex flex-col items-center bg-black">
               <h2 className="font-dancing text-4xl text-rose-300 mb-12">My Dearest,</h2>
               {letterParagraphs.map((para, i) => (
                 <p key={i} className={`mb-8 text-center text-lg leading-relaxed ${para.type === 'title' ? 'text-2xl text-rose-400 font-bold' : 'text-white/80'}`}>
