@@ -38,7 +38,7 @@ function TheaterCurtains({ isOpen }: { isOpen: boolean }) {
         style={{
           transform: isOpen ? 'translateX(-100%)' : 'translateX(0)',
           background: 'linear-gradient(to right, #4c0519, #9f1239, #881337, #4c0519)',
-          boxShadow: '10px 0 30px rgba(0,0,0,0.8)',
+          boxShadow: '10px 0 50px rgba(0,0,0,0.8)',
           borderRight: '2px solid rgba(255,255,255,0.1)',
         }}
       >
@@ -51,7 +51,7 @@ function TheaterCurtains({ isOpen }: { isOpen: boolean }) {
         style={{
           transform: isOpen ? 'translateX(100%)' : 'translateX(0)',
           background: 'linear-gradient(to left, #4c0519, #9f1239, #881337, #4c0519)',
-          boxShadow: '-10px 0 30px rgba(0,0,0,0.8)',
+          boxShadow: '-10px 0 50px rgba(0,0,0,0.8)',
           borderLeft: '2px solid rgba(255,255,255,0.1)',
         }}
       >
