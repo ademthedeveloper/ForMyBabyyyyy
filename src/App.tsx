@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback, useMemo, useRef } from 'react';
+import { useState, useEffect, useCallback, useMemo, useRef } from 'react';
 
 type Scene = 'intro' | 'envelope' | 'letter';
 
@@ -531,18 +531,15 @@ function PhotoCard({
 }) {
   const [imgError, setImgError] = useState(false);
 
-  // Robust path for GitHub Pages
-  const baseUrl = import.meta.env.BASE_URL || '/';
-  const finalSrc = baseUrl.endsWith('/') ? `${baseUrl}${src}` : `${baseUrl}/${src}`;
-
   return (
     <div className="group relative overflow-hidden rounded-2xl cursor-pointer animate-photo-glow bg-white/5 border border-white/10">
       <div className={`relative flex flex-col ${gradient}`}>
         {!imgError ? (
           <img
-            src={finalSrc}
+            src={src}
             alt={label}
             className="w-full h-auto block transition-transform duration-700 ease-out group-hover:scale-105"
+            style={{ minHeight: '200px' }}
             loading="lazy"
             onError={() => setImgError(true)}
           />
@@ -575,19 +572,10 @@ function PhotoGallery() {
     return () => clearTimeout(timer);
   }, []);
 
-  // ============================================================
-  // 📸 TO CHANGE PHOTOS:
-  // 1. Replace the file in the "public" folder:
-  //    - public/photo1.jpg → your first photo
-  //    - public/photo2.jpg → your second photo
-  //    - public/photo3.jpg → your third photo
-  // 2. Make sure the filenames match exactly (photo1.jpg, photo2.jpg, photo3.jpg)
-  // 3. The photos will automatically load from the public folder
-  // ============================================================
   const photos = [
-    { src: 'IMG-20260526-WA0096.jpg', label: 'Our First Memory', gradient: 'bg-gradient-to-br from-rose-950/40 via-pink-900/20 to-purple-950/40' },
-    { src: 'IMG-20260611-WA0006.jpg', label: 'Our Adventure', gradient: 'bg-gradient-to-br from-purple-950/40 via-indigo-900/20 to-blue-950/40' },
-    { src: 'IMG-20260611-WA0008.jpg', label: 'Us Together', gradient: 'bg-gradient-to-br from-red-950/40 via-rose-900/20 to-pink-950/40' },
+    { src: './IMG-20260526-WA0096.jpg', label: 'Our First Memory', gradient: 'bg-gradient-to-br from-rose-950/40 via-pink-900/20 to-purple-950/40' },
+    { src: './IMG-20260611-WA0006.jpg', label: 'Our Adventure', gradient: 'bg-gradient-to-br from-purple-950/40 via-indigo-900/20 to-blue-950/40' },
+    { src: './IMG-20260611-WA0008.jpg', label: 'Us Together', gradient: 'bg-gradient-to-br from-red-950/40 via-rose-900/20 to-pink-950/40' },
   ];
 
   return (
