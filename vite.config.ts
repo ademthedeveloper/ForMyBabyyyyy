@@ -5,8 +5,8 @@ import path from "path";
 
 // https://vitejs.dev/config/
 export default defineConfig({
-  // Use the repository name for GitHub Pages
-  base: "/ForMyBabyyyyy/",
+  // Use relative base for maximum compatibility on all devices/hosts
+  base: "./",
   plugins: [react(), tailwindcss()],
   resolve: {
     alias: {
@@ -16,5 +16,6 @@ export default defineConfig({
   build: {
     outDir: "dist",
     assetsDir: "assets",
+    minify: "terser", // More thorough minification
   },
 });

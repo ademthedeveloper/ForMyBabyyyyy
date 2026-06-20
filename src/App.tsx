@@ -54,13 +54,13 @@ function TheaterCurtains({ isOpen }: { isOpen: boolean }) {
 
 function FloatingHearts() {
   const hearts = useMemo(() => {
-    return Array.from({ length: 10 }, (_, i) => ({
+    return Array.from({ length: 12 }, (_, i) => ({
       id: i,
       left: Math.random() * 100,
       delay: Math.random() * 5,
       duration: 6 + Math.random() * 6,
       size: 1 + Math.random() * 1,
-      emoji: ['❤️', '💖', '💗'][Math.floor(Math.random() * 3)],
+      emoji: ['❤️', '💖', '💗', '💕'][Math.floor(Math.random() * 4)],
     }));
   }, []);
 
@@ -99,10 +99,15 @@ export default function App() {
   const [pin, setPin] = useState('');
   const [isWrong, setIsWrong] = useState(false);
 
+  useEffect(() => {
+    console.log("App mounted. Scene:", scene);
+  }, [scene]);
+
   const nextScene = useCallback((next: Scene) => {
     setCurtainsOpen(false);
     setTimeout(() => {
       setScene(next);
+      window.scrollTo(0, 0);
       setTimeout(() => setCurtainsOpen(true), 500);
     }, 2200);
   }, []);
@@ -141,7 +146,7 @@ export default function App() {
               setIsStarted(true);
               setTimeout(() => setCurtainsOpen(true), 500);
             }}
-            className="px-10 py-4 rounded-full border-2 border-rose-500 text-white text-lg uppercase tracking-widest font-bold bg-rose-500/10 shadow-[0_0_20px_rgba(244,63,94,0.3)] active:scale-95 transition-transform"
+            className="px-10 py-4 rounded-full border-2 border-rose-500 text-white text-lg uppercase tracking-widest font-bold bg-rose-500/10 shadow-[0_0_30px_rgba(244,63,94,0.4)] active:scale-95 transition-all"
           >
             Begin Experience
           </button>
@@ -193,6 +198,7 @@ export default function App() {
                   {para.text}
                 </p>
               ))}
+              <div className="h-24 w-full" />
             </div>
           )}
         </div>
