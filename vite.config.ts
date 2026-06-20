@@ -3,8 +3,10 @@ import react from "@vitejs/plugin-react";
 import tailwindcss from "@tailwindcss/vite";
 import path from "path";
 
+// https://vitejs.dev/config/
 export default defineConfig({
-  base: "/ForMyBabyyyyy/",
+  // Relative base is the most compatible setting for all hosting environments
+  base: "./",
   plugins: [react(), tailwindcss()],
   resolve: {
     alias: {
@@ -14,5 +16,6 @@ export default defineConfig({
   build: {
     outDir: "dist",
     assetsDir: "assets",
+    emptyOutDir: true,
   },
 });

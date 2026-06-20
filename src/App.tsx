@@ -29,7 +29,7 @@ const letterParagraphs = [
 
 function TheaterCurtains({ isOpen }: { isOpen: boolean }) {
   return (
-    <div className="fixed inset-0 pointer-events-none z-[150] flex overflow-hidden">
+    <div className="fixed inset-0 pointer-events-none z-[800] flex overflow-hidden">
       <div
         className="h-full w-1/2 transition-transform duration-[2000ms] ease-in-out"
         style={{
@@ -323,7 +323,7 @@ export default function App() {
       <TheaterCurtains isOpen={curtainsOpen} />
 
       {!isStarted && (
-        <div className="fixed inset-0 z-[200] bg-black flex items-center justify-center">
+        <div className="fixed inset-0 z-[999] bg-black flex items-center justify-center">
           <button
             onClick={handleStart}
             className="px-12 py-5 rounded-full border-2 border-rose-500/40 text-rose-100 text-xl uppercase tracking-[0.2em] font-bold bg-rose-500/10 shadow-[0_0_30px_rgba(244,63,94,0.3)] hover:scale-110 active:scale-95 transition-all duration-300"
