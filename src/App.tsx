@@ -104,7 +104,7 @@ function FloatingHearts({ count = 10 }: { count?: number }) {
 }
 
 /* ================================================================
-   PARTICLES
+   PARTICLES / SPARKLES
    ================================================================ */
 function Particles() {
   const particles = useMemo(() => {
@@ -156,10 +156,7 @@ function CinematicIntro({ onComplete }: { onComplete: () => void }) {
       onComplete();
     }, 6500);
     return () => {
-      clearTimeout(t1);
-      clearTimeout(t2);
-      clearTimeout(t3);
-      clearTimeout(t4);
+      clearTimeout(t1); clearTimeout(t2); clearTimeout(t3); clearTimeout(t4);
     };
   }, [onComplete]);
 
@@ -214,10 +211,7 @@ function EnvelopeScene({ onOpen }: { onOpen: () => void }) {
         setTimeout(() => onOpen(), 2500);
       } else {
         setWrongPin(true);
-        setTimeout(() => {
-          setRawInput('');
-          setWrongPin(false);
-        }, 1000);
+        setTimeout(() => { setRawInput(''); setWrongPin(false); }, 1000);
       }
     }
   }, [rawInput, onOpen]);
@@ -241,15 +235,7 @@ function EnvelopeScene({ onOpen }: { onOpen: () => void }) {
 
       {!isOpen && (
         <div className="mt-12 flex flex-col items-center">
-          <input
-            type="tel"
-            maxLength={4}
-            value={rawInput}
-            onChange={(e) => setRawInput(e.target.value.replace(/[^0-9]/g, ''))}
-            className="absolute opacity-0 w-0 h-0"
-            autoFocus
-            id="pin-input"
-          />
+          <input type="tel" maxLength={4} value={rawInput} onChange={(e) => setRawInput(e.target.value.replace(/[^0-9]/g, ''))} className="absolute opacity-0 w-0 h-0" autoFocus id="pin-input" />
           <div className={`flex gap-4 cursor-pointer ${wrongPin ? 'animate-shake' : ''}`} onClick={() => document.getElementById('pin-input')?.focus()}>
             {[0, 1, 2, 3].map((i) => (
               <div key={i} className={`w-12 h-16 rounded-xl border-2 flex items-center justify-center transition-all duration-300 ${rawInput.length > i ? 'border-rose-500 bg-rose-500/10 shadow-[0_0_15px_#e11d48]' : 'border-white/20'}`}>
@@ -305,17 +291,13 @@ function LoveLetterSection() {
         </h2>
         <div className={`transition-opacity duration-1000 ${started ? 'opacity-100' : 'opacity-0'}`}>
           {letterParagraphs.map((para, i) => (
-            <p
-              key={i}
-              className={`mb-8 text-center leading-relaxed ${
-                para.type === 'title' ? 'font-dancing text-3xl md:text-4xl text-rose-300' :
-                para.type === 'emphasis' ? 'font-inter font-semibold text-rose-100 text-lg' :
-                para.type === 'anniversary' ? 'font-dancing text-3xl text-rose-400 my-10' :
-                para.type === 'signature' ? 'font-dancing text-3xl text-rose-200 mt-12' :
-                'font-inter text-white/80 text-lg'
-              }`}
-              style={{ transition: `all 0.8s ease-out ${0.2 + i * 0.25}s`, opacity: started ? 1 : 0, transform: started ? 'translateY(0)' : 'translateY(20px)' }}
-            >
+            <p key={i} className={`mb-8 text-center leading-relaxed ${
+              para.type === 'title' ? 'font-dancing text-3xl md:text-4xl text-rose-300' :
+              para.type === 'emphasis' ? 'font-inter font-semibold text-rose-100 text-lg' :
+              para.type === 'anniversary' ? 'font-dancing text-3xl text-rose-400 my-10' :
+              para.type === 'signature' ? 'font-dancing text-3xl text-rose-200 mt-12' :
+              'font-inter text-white/80 text-lg'
+            }`} style={{ transition: `all 0.8s ease-out ${0.2 + i * 0.25}s`, opacity: started ? 1 : 0, transform: started ? 'translateY(0)' : 'translateY(20px)' }}>
               {para.text.split('\n').map((line, j) => <React.Fragment key={j}>{line}<br/></React.Fragment>)}
             </p>
           ))}
@@ -366,10 +348,7 @@ export default function App() {
 
       {!isStarted && (
         <div className="fixed inset-0 z-[200] bg-black flex items-center justify-center">
-          <button
-            onClick={handleStart}
-            className="px-12 py-5 rounded-full border-2 border-rose-500/40 text-rose-100 text-xl uppercase tracking-[0.2em] font-bold bg-rose-500/10 shadow-[0_0_30px_rgba(244,63,94,0.3)] hover:scale-110 active:scale-95 transition-all duration-300"
-          >
+          <button onClick={handleStart} className="px-12 py-5 rounded-full border-2 border-rose-500/40 text-rose-100 text-xl uppercase tracking-[0.2em] font-bold bg-rose-500/10 shadow-[0_0_30px_rgba(244,63,94,0.3)] hover:scale-110 active:scale-95 transition-all duration-300">
             Begin Experience
           </button>
         </div>
