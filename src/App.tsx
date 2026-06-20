@@ -587,9 +587,9 @@ function PhotoGallery() {
   // 3. The photos will automatically load from the public folder
   // ============================================================
   const photos = [
-    { src: 'photo1.jpg', label: 'Our First Memory', gradient: 'bg-gradient-to-br from-rose-950 via-pink-900/50 to-purple-950' },
-    { src: 'photo2.jpg', label: 'Our Adventure', gradient: 'bg-gradient-to-br from-purple-950 via-indigo-900/50 to-blue-950' },
-    { src: 'photo3.jpg', label: 'Us Together', gradient: 'bg-gradient-to-br from-red-950 via-rose-900/50 to-pink-950' },
+    { src: `${import.meta.env.BASE_URL}photo1.jpg`, label: 'Our First Memory', gradient: 'bg-gradient-to-br from-rose-950 via-pink-900/50 to-purple-950' },
+    { src: `${import.meta.env.BASE_URL}photo2.jpg`, label: 'Our Adventure', gradient: 'bg-gradient-to-br from-purple-950 via-indigo-900/50 to-blue-950' },
+    { src: `${import.meta.env.BASE_URL}photo3.jpg`, label: 'Us Together', gradient: 'bg-gradient-to-br from-red-950 via-rose-900/50 to-pink-950' },
   ];
 
   return (
