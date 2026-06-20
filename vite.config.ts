@@ -5,8 +5,8 @@ import path from "path";
 
 // https://vitejs.dev/config/
 export default defineConfig({
-  // Use exact repo name for GitHub Pages
-  base: "/ForMyBabyyyyy/",
+  // Use relative base for the absolute highest compatibility on all devices
+  base: "./",
   plugins: [react(), tailwindcss()],
   resolve: {
     alias: {
@@ -16,11 +16,7 @@ export default defineConfig({
   build: {
     outDir: "dist",
     assetsDir: "assets",
+    emptyOutDir: true,
     sourcemap: false,
-    rollupOptions: {
-      output: {
-        manualChunks: undefined,
-      },
-    },
   },
 });
