@@ -99,10 +99,6 @@ export default function App() {
   const [pin, setPin] = useState('');
   const [isWrong, setIsWrong] = useState(false);
 
-  useEffect(() => {
-    console.log("App mounted. Scene:", scene);
-  }, [scene]);
-
   const nextScene = useCallback((next: Scene) => {
     setCurtainsOpen(false);
     setTimeout(() => {

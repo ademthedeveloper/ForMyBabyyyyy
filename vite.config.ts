@@ -5,7 +5,7 @@ import path from "path";
 
 // https://vitejs.dev/config/
 export default defineConfig({
-  // Use relative base for maximum compatibility on all hosts
+  // Relative base path ensures everything loads correctly on GitHub Pages
   base: "./",
   plugins: [react(), tailwindcss()],
   resolve: {
