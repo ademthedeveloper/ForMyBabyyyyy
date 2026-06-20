@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback, useMemo, useRef } from 'react';
+import React, { useState, useEffect, useCallback, useMemo, useRef } from 'react';
 
 type Scene = 'intro' | 'envelope' | 'letter';
 
@@ -531,11 +531,9 @@ function PhotoCard({
 }) {
   const [imgError, setImgError] = useState(false);
 
-  // Create the correct URL for GitHub Pages
+  // Robust path for GitHub Pages
   const baseUrl = import.meta.env.BASE_URL || '/';
-  const cleanBase = baseUrl.endsWith('/') ? baseUrl : `${baseUrl}/`;
-  const cleanSrc = src.startsWith('/') ? src.slice(1) : src;
-  const finalSrc = cleanBase + cleanSrc;
+  const finalSrc = baseUrl.endsWith('/') ? `${baseUrl}${src}` : `${baseUrl}/${src}`;
 
   return (
     <div className="group relative overflow-hidden rounded-2xl cursor-pointer animate-photo-glow bg-white/5 border border-white/10">
@@ -545,7 +543,6 @@ function PhotoCard({
             src={finalSrc}
             alt={label}
             className="w-full h-auto block transition-transform duration-700 ease-out group-hover:scale-105"
-            style={{ minHeight: '200px' }}
             loading="lazy"
             onError={() => setImgError(true)}
           />
@@ -553,7 +550,6 @@ function PhotoCard({
           <div className="flex flex-col items-center justify-center p-12 bg-rose-950/20 min-h-[300px]">
             <span className="text-5xl mb-3">📸</span>
             <span className="font-dancing text-rose-300/60 text-base">Image not found</span>
-            <code className="text-[10px] text-white/30 mt-4 break-all px-4 text-center">{finalSrc}</code>
           </div>
         )}
 
@@ -589,9 +585,9 @@ function PhotoGallery() {
   // 3. The photos will automatically load from the public folder
   // ============================================================
   const photos = [
-    { src: 'photo1.jpg', label: 'Our First Memory', gradient: 'bg-gradient-to-br from-rose-950/40 via-pink-900/20 to-purple-950/40' },
-    { src: 'photo2.jpg', label: 'Our Adventure', gradient: 'bg-gradient-to-br from-purple-950/40 via-indigo-900/20 to-blue-950/40' },
-    { src: 'photo3.jpg', label: 'Us Together', gradient: 'bg-gradient-to-br from-red-950/40 via-rose-900/20 to-pink-950/40' },
+    { src: 'IMG-20260526-WA0096.jpg', label: 'Our First Memory', gradient: 'bg-gradient-to-br from-rose-950/40 via-pink-900/20 to-purple-950/40' },
+    { src: 'IMG-20260611-WA0006.jpg', label: 'Our Adventure', gradient: 'bg-gradient-to-br from-purple-950/40 via-indigo-900/20 to-blue-950/40' },
+    { src: 'IMG-20260611-WA0008.jpg', label: 'Us Together', gradient: 'bg-gradient-to-br from-red-950/40 via-rose-900/20 to-pink-950/40' },
   ];
 
   return (
