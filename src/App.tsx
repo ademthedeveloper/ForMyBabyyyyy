@@ -66,7 +66,7 @@ function TheaterCurtains({ isOpen }: { isOpen: boolean }) {
 /* ================================================================
    FLOATING HEARTS
    ================================================================ */
-function FloatingHearts({ count = 10 }: { count?: number }) {
+function FloatingHearts({ count = 10 }) {
   const hearts = useMemo(() => {
     return Array.from({ length: count }, (_, i) => ({
       id: i,
@@ -348,7 +348,10 @@ export default function App() {
 
       {!isStarted && (
         <div className="fixed inset-0 z-[200] bg-black flex items-center justify-center">
-          <button onClick={handleStart} className="px-12 py-5 rounded-full border-2 border-rose-500/40 text-rose-100 text-xl uppercase tracking-[0.2em] font-bold bg-rose-500/10 shadow-[0_0_30px_rgba(244,63,94,0.3)] hover:scale-110 active:scale-95 transition-all duration-300">
+          <button
+            onClick={handleStart}
+            className="px-12 py-5 rounded-full border-2 border-rose-500/40 text-rose-100 text-xl uppercase tracking-[0.2em] font-bold bg-rose-500/10 shadow-[0_0_30px_rgba(244,63,94,0.3)] hover:scale-110 active:scale-95 transition-all duration-300"
+          >
             Begin Experience
           </button>
         </div>
