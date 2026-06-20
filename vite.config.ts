@@ -5,7 +5,7 @@ import path from "path";
 
 // https://vitejs.dev/config/
 export default defineConfig({
-  // Relative base is the most compatible setting for all hosting environments
+  // Use relative base for universal compatibility across all devices and GitHub Pages
   base: "./",
   plugins: [react(), tailwindcss()],
   resolve: {
@@ -17,5 +17,6 @@ export default defineConfig({
     outDir: "dist",
     assetsDir: "assets",
     emptyOutDir: true,
+    sourcemap: false,
   },
 });

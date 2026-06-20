@@ -27,9 +27,12 @@ const letterParagraphs = [
   { text: "With all my love,\nAdam ❤️", type: 'signature' as const },
 ];
 
+/* ================================================================
+   THEATER CURTAINS
+   ================================================================ */
 function TheaterCurtains({ isOpen }: { isOpen: boolean }) {
   return (
-    <div className="fixed inset-0 pointer-events-none z-[800] flex overflow-hidden">
+    <div className="fixed inset-0 pointer-events-none z-[150] flex overflow-hidden">
       <div
         className="h-full w-1/2 transition-transform duration-[2000ms] ease-in-out"
         style={{
@@ -48,7 +51,7 @@ function TheaterCurtains({ isOpen }: { isOpen: boolean }) {
         style={{
           transform: isOpen ? 'translateX(100%)' : 'translateX(0)',
           background: 'linear-gradient(to left, #4c0519, #9f1239, #881337, #4c0519)',
-          boxShadow: '-10px 0 50px rgba(0,0,0,0.8)',
+          boxShadow: '-10px 0 30px rgba(0,0,0,0.8)',
           borderLeft: '2px solid rgba(255,255,255,0.1)',
         }}
       >
@@ -60,14 +63,17 @@ function TheaterCurtains({ isOpen }: { isOpen: boolean }) {
   );
 }
 
-function FloatingHearts({ count = 10 }) {
+/* ================================================================
+   FLOATING HEARTS
+   ================================================================ */
+function FloatingHearts({ count = 12 }: { count?: number }) {
   const hearts = useMemo(() => {
     return Array.from({ length: count }, (_, i) => ({
       id: i,
       left: Math.random() * 100,
       delay: Math.random() * 20,
       duration: 7 + Math.random() * 9,
-      size: 0.5 + Math.random() * 0.7,
+      size: 0.8 + Math.random() * 0.8,
       drift: -70 + Math.random() * 140,
       rotation: -60 + Math.random() * 120,
       emoji: ['❤️', '💕', '💖', '💗', '💘', '✨'][Math.floor(Math.random() * 6)],
@@ -93,20 +99,31 @@ function FloatingHearts({ count = 10 }) {
           {heart.emoji}
         </div>
       ))}
+      <style>{`
+        @keyframes floatUp {
+          0% { transform: translateY(0) translateX(0) rotate(0); opacity: 0; }
+          10% { opacity: 1; }
+          90% { opacity: 1; }
+          100% { transform: translateY(-110vh) translateX(var(--drift)) rotate(var(--rotation)); opacity: 0; }
+        }
+      `}</style>
     </div>
   );
 }
 
+/* ================================================================
+   PARTICLES / SPARKLES
+   ================================================================ */
 function Particles() {
   const particles = useMemo(() => {
-    return Array.from({ length: 50 }, (_, i) => ({
+    return Array.from({ length: 40 }, (_, i) => ({
       id: i,
       left: Math.random() * 100,
       top: Math.random() * 100,
-      size: 1 + Math.random() * 2.5,
+      size: 1.5 + Math.random() * 2,
       duration: 2 + Math.random() * 4,
       delay: Math.random() * 5,
-      opacity: 0.2 + Math.random() * 0.5,
+      opacity: 0.3 + Math.random() * 0.5,
       color: `rgba(255, ${Math.floor(130 + Math.random() * 125)}, ${Math.floor(170 + Math.random() * 85)}, 1)`,
     }));
   }, []);
@@ -128,10 +145,19 @@ function Particles() {
           }}
         />
       ))}
+      <style>{`
+        @keyframes twinkle {
+          0%, 100% { opacity: 0.2; transform: scale(1); }
+          50% { opacity: 1; transform: scale(1.2); }
+        }
+      `}</style>
     </div>
   );
 }
 
+/* ================================================================
+   CINEMATIC INTRO
+   ================================================================ */
 function CinematicIntro({ onComplete }: { onComplete: () => void }) {
   const [phase, setPhase] = useState<'waiting' | 'title' | 'subtitle' | 'progress' | 'done'>('waiting');
 
@@ -150,14 +176,10 @@ function CinematicIntro({ onComplete }: { onComplete: () => void }) {
 
   return (
     <div className="fixed inset-0 bg-black flex flex-col items-center justify-center z-[80]">
-      <div className="absolute inset-0 pointer-events-none" style={{
-        background: 'radial-gradient(ellipse at center, transparent 30%, rgba(0,0,0,0.9) 100%)',
-      }} />
-
       <div className={`transition-all duration-[2500ms] ease-out ${
         phase !== 'waiting' ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
       }`}>
-        <h1 className="font-playfair text-4xl md:text-6xl font-bold text-white tracking-wide text-center px-6 animate-glow-pulse">
+        <h1 className="font-playfair text-3xl md:text-6xl font-bold text-white tracking-wide text-center px-6">
           A Love Story Experience
         </h1>
       </div>
@@ -175,8 +197,12 @@ function CinematicIntro({ onComplete }: { onComplete: () => void }) {
       }`}>
         <div className="h-[2px] bg-white/10 rounded-full overflow-hidden">
           <div
-            className="h-full rounded-full animate-progress-fill"
-            style={{ background: 'linear-gradient(90deg, #e11d48, #f43f5e, #fb7185)' }}
+            className="h-full rounded-full"
+            style={{
+              background: 'linear-gradient(90deg, #e11d48, #f43f5e, #fb7185)',
+              width: phase === 'done' ? '100%' : '0%',
+              transition: 'width 4000ms linear'
+            }}
           />
         </div>
       </div>
@@ -184,6 +210,9 @@ function CinematicIntro({ onComplete }: { onComplete: () => void }) {
   );
 }
 
+/* ================================================================
+   ENVELOPE SCENE
+   ================================================================ */
 function EnvelopeScene({ onOpen }: { onOpen: () => void }) {
   const [isOpen, setIsOpen] = useState(false);
   const [rawInput, setRawInput] = useState('');
@@ -202,39 +231,51 @@ function EnvelopeScene({ onOpen }: { onOpen: () => void }) {
   }, [rawInput, onOpen]);
 
   return (
-    <div className="fixed inset-0 flex flex-col items-center justify-center z-[80] bg-black">
+    <div className="fixed inset-0 flex flex-col items-center justify-center z-[80] bg-black p-6">
       <Particles />
-      <div className="animate-envelope-float select-none relative">
-        <div className="w-64 h-44 md:w-80 md:h-56 rounded-2xl relative overflow-hidden" style={{ background: 'linear-gradient(180deg, #9f1239 0%, #881337 30%, #4c0519 100%)', boxShadow: '0 25px 80px rgba(225, 29, 72, 0.3)' }}>
-          <div className="absolute inset-0 opacity-10" style={{
-            backgroundImage: 'repeating-linear-gradient(45deg, transparent, transparent 10px, rgba(255,255,255,0.05) 10px, rgba(255,255,255,0.05) 20px)',
-          }} />
+      <div className="select-none relative" style={{ animation: 'float 3s ease-in-out infinite' }}>
+        <div className="w-64 h-44 md:w-80 md:h-56 rounded-2xl relative overflow-hidden" style={{ background: 'linear-gradient(180deg, #9f1239 0%, #881337 30%, #4c0519 100%)', boxShadow: '0 25px 80px rgba(225, 29, 72, 0.4)' }}>
         </div>
         <div className="absolute top-0 left-0 w-full origin-top z-20" style={{ height: '55%', transform: isOpen ? 'rotateX(-180deg)' : 'rotateX(0deg)', transition: 'transform 1.4s ease' }}>
           <div className="w-full h-full" style={{ clipPath: 'polygon(0 0, 50% 100%, 100% 0)', background: 'linear-gradient(180deg, #be123c 0%, #9f1239 100%)' }} />
         </div>
         <div className="absolute left-1/2 -translate-x-1/2 z-30 transition-all duration-700" style={{ top: isOpen ? '20%' : '45%' }}>
-          <span className="text-6xl drop-shadow-2xl">{isOpen ? '❤️' : '🔒'}</span>
+          <span className="text-6xl">{isOpen ? '❤️' : '🔒'}</span>
         </div>
       </div>
 
+      <style>{`
+        @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-15px); } }
+      `}</style>
+
       {!isOpen && (
         <div className="mt-12 flex flex-col items-center">
-          <input type="tel" maxLength={4} value={rawInput} onChange={(e) => setRawInput(e.target.value.replace(/[^0-9]/g, ''))} className="absolute opacity-0 w-0 h-0" autoFocus id="pin-input" />
-          <div className={`flex gap-4 cursor-pointer ${wrongPin ? 'animate-shake' : ''}`} onClick={() => document.getElementById('pin-input')?.focus()}>
+          <input
+            type="tel"
+            maxLength={4}
+            value={rawInput}
+            onChange={(e) => setRawInput(e.target.value.replace(/[^0-9]/g, ''))}
+            className="absolute opacity-0 w-0 h-0"
+            autoFocus
+            id="pin-input"
+          />
+          <div className="flex gap-4 cursor-pointer" onClick={() => document.getElementById('pin-input')?.focus()}>
             {[0, 1, 2, 3].map((i) => (
-              <div key={i} className={`w-12 h-16 rounded-xl border-2 flex items-center justify-center transition-all duration-300 ${rawInput.length > i ? 'border-rose-500 bg-rose-500/10 shadow-[0_0_15px_#e11d48]' : 'border-white/20'}`}>
+              <div key={i} className={`w-12 h-16 rounded-xl border-2 flex items-center justify-center transition-all duration-300 ${rawInput.length > i ? 'border-rose-500 bg-rose-500/10' : 'border-white/20'}`}>
                 <span className="text-white text-3xl">{rawInput.length > i ? '●' : ''}</span>
               </div>
             ))}
           </div>
-          <p className="mt-6 text-rose-300 font-dancing text-2xl animate-tap-pulse">Enter PIN to open</p>
+          <p className="mt-6 text-rose-300 font-dancing text-2xl">Enter PIN to open</p>
         </div>
       )}
     </div>
   );
 }
 
+/* ================================================================
+   TYPEWRITER TEXT
+   ================================================================ */
 function TypewriterText({ text, speed = 65, onComplete }: { text: string, speed?: number, onComplete?: () => void }) {
   const [displayed, setDisplayed] = useState('');
   const [complete, setComplete] = useState(false);
@@ -259,30 +300,37 @@ function TypewriterText({ text, speed = 65, onComplete }: { text: string, speed?
   );
 }
 
+/* ================================================================
+   LOVE LETTER SECTION
+   ================================================================ */
 function LoveLetterSection() {
   const [started, setStarted] = useState(false);
 
   return (
-    <section className="min-h-screen flex flex-col items-center py-24 px-6 bg-black overflow-y-auto selection:bg-rose-500/30">
+    <section className="min-h-screen flex flex-col items-center py-24 px-6 bg-black overflow-y-auto">
       <div className="max-w-2xl w-full">
         <h2 className="font-dancing text-4xl md:text-5xl text-rose-300 mb-12 text-center drop-shadow-lg">
           <TypewriterText text="My Dearest," onComplete={() => setStarted(true)} />
         </h2>
         <div className={`transition-opacity duration-1000 ${started ? 'opacity-100' : 'opacity-0'}`}>
           {letterParagraphs.map((para, i) => (
-            <p key={i} className={`mb-8 text-center leading-relaxed ${
-              para.type === 'title' ? 'font-dancing text-3xl md:text-4xl text-rose-300' :
-              para.type === 'emphasis' ? 'font-inter font-semibold text-rose-100 text-lg' :
-              para.type === 'anniversary' ? 'font-dancing text-3xl text-rose-400 my-10' :
-              para.type === 'signature' ? 'font-dancing text-3xl text-rose-200 mt-12' :
-              'font-inter text-white/80 text-lg'
-            }`} style={{ transition: `all 0.8s ease-out ${0.2 + i * 0.25}s`, opacity: started ? 1 : 0, transform: started ? 'translateY(0)' : 'translateY(20px)' }}>
+            <p
+              key={i}
+              className={`mb-8 text-center leading-relaxed ${
+                para.type === 'title' ? 'font-dancing text-3xl md:text-4xl text-rose-300' :
+                para.type === 'emphasis' ? 'font-inter font-semibold text-rose-100 text-lg' :
+                para.type === 'anniversary' ? 'font-dancing text-3xl text-rose-400 my-10' :
+                para.type === 'signature' ? 'font-dancing text-3xl text-rose-200 mt-12' :
+                'font-inter text-white/80 text-lg'
+              }`}
+              style={{ transition: `all 0.8s ease-out ${0.2 + i * 0.25}s`, opacity: started ? 1 : 0, transform: started ? 'translateY(0)' : 'translateY(20px)' }}
+            >
               {para.text.split('\n').map((line, j) => <React.Fragment key={j}>{line}<br/></React.Fragment>)}
             </p>
           ))}
           <div className="mt-16 flex items-center justify-center gap-4 opacity-50">
             <div className="h-[1px] w-20 bg-gradient-to-r from-transparent to-rose-500" />
-            <span className="text-rose-400 text-xl animate-heart-beat">❤️</span>
+            <span className="text-rose-400 text-xl">❤️</span>
             <div className="h-[1px] w-20 bg-gradient-to-l from-transparent to-rose-500" />
           </div>
           <div className="h-24" />
@@ -292,6 +340,9 @@ function LoveLetterSection() {
   );
 }
 
+/* ================================================================
+   MAIN APP
+   ================================================================ */
 export default function App() {
   const [scene, setScene] = useState<Scene>('intro');
   const [isStarted, setIsStarted] = useState(false);
@@ -319,7 +370,7 @@ export default function App() {
   }, []);
 
   return (
-    <div className="relative min-h-screen bg-black text-white font-inter">
+    <div className="relative min-h-screen bg-black text-white font-inter overflow-hidden">
       <TheaterCurtains isOpen={curtainsOpen} />
 
       {!isStarted && (
@@ -335,7 +386,7 @@ export default function App() {
 
       {isStarted && <FloatingHearts count={15} />}
 
-      <main>
+      <main className="relative z-10 w-full h-full min-h-screen">
         {isStarted && scene === 'intro' && <CinematicIntro onComplete={handleIntroComplete} />}
         {isStarted && scene === 'envelope' && <EnvelopeScene onOpen={handleEnvelopeOpen} />}
         {isStarted && scene === 'letter' && <LoveLetterSection />}
