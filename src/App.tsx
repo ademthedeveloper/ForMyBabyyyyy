@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback, useMemo, useRef } from 'react';
+import React, { useState, useEffect, useCallback, useMemo, useRef } from 'react';
 
 type Scene = 'intro' | 'envelope' | 'letter';
 
@@ -530,13 +530,15 @@ function PhotoCard({
   gradient: string;
 }) {
   const [imgError, setImgError] = useState(false);
+  const baseUrl = import.meta.env.BASE_URL || '/';
+  const finalSrc = src.startsWith('http') ? src : `${baseUrl}${src.replace('./', '')}`;
 
   return (
     <div className="group relative overflow-hidden rounded-2xl cursor-pointer animate-photo-glow bg-white/5 border border-white/10">
       <div className={`relative flex flex-col ${gradient}`}>
         {!imgError ? (
           <img
-            src={src}
+            src={finalSrc}
             alt={label}
             className="w-full h-auto block transition-transform duration-700 ease-out group-hover:scale-105"
             style={{ minHeight: '200px' }}
@@ -573,9 +575,9 @@ function PhotoGallery() {
   }, []);
 
   const photos = [
-    { src: './IMG-20260526-WA0096.jpg', label: 'Our First Memory', gradient: 'bg-gradient-to-br from-rose-950/40 via-pink-900/20 to-purple-950/40' },
-    { src: './IMG-20260611-WA0006.jpg', label: 'Our Adventure', gradient: 'bg-gradient-to-br from-purple-950/40 via-indigo-900/20 to-blue-950/40' },
-    { src: './IMG-20260611-WA0008.jpg', label: 'Us Together', gradient: 'bg-gradient-to-br from-red-950/40 via-rose-900/20 to-pink-950/40' },
+    { src: 'IMG-20260526-WA0096.jpg', label: 'Our First Memory', gradient: 'bg-gradient-to-br from-rose-950/40 via-pink-900/20 to-purple-950/40' },
+    { src: 'IMG-20260611-WA0006.jpg', label: 'Our Adventure', gradient: 'bg-gradient-to-br from-purple-950/40 via-indigo-900/20 to-blue-950/40' },
+    { src: 'IMG-20260611-WA0008.jpg', label: 'Us Together', gradient: 'bg-gradient-to-br from-red-950/40 via-rose-900/20 to-pink-950/40' },
   ];
 
   return (
