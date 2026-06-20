@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback, useMemo, useRef } from 'react';
+import React, { useState, useEffect, useCallback, useMemo, useRef } from 'react';
 
 type Scene = 'intro' | 'envelope' | 'letter';
 
@@ -59,7 +59,7 @@ function FloatingHearts({ count = 10, intense = false }: { count?: number; inten
             '--drift': `${heart.drift}px`,
             '--rotation': `${heart.rotation}deg`,
             willChange: 'transform, opacity',
-          } as React.CSSProperties}
+          } as any}
         >
           {heart.emoji}
         </div>
@@ -460,7 +460,7 @@ function LoveLetterSection() {
                 </span>
               ));
 
-            let style: React.CSSProperties = {
+            let style: any = {
               opacity: started ? 1 : 0,
               transform: started ? 'translateY(0)' : 'translateY(15px)',
               transition: `all 0.8s ease-out ${0.2 + i * 0.25}s`,
