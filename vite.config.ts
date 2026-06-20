@@ -5,8 +5,8 @@ import path from "path";
 
 // https://vitejs.dev/config/
 export default defineConfig({
-  // Relative base is the most stable setting for GitHub Pages
-  base: "./",
+  // Use the exact repository name for guaranteed loading on GitHub Pages
+  base: "/ForMyBabyyyyy/",
   plugins: [react(), tailwindcss()],
   resolve: {
     alias: {
@@ -16,6 +16,5 @@ export default defineConfig({
   build: {
     outDir: "dist",
     assetsDir: "assets",
-    emptyOutDir: true,
   },
 });

@@ -4,36 +4,25 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
     <title>A Love Story Experience</title>
-    <!-- High Quality Fonts -->
+    <!-- Premium Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Inter:wght@100..900&family=Dancing+Script:wght@400..700&display=swap" rel="stylesheet">
     <style>
       body, html { margin: 0; padding: 0; background-color: #000; width: 100%; height: 100%; overflow: hidden; }
       #root { width: 100%; height: 100%; }
-      /* Safety button shown while JS loads */
-      #loading-overlay {
-        position: fixed; inset: 0; background: black;
-        display: flex; align-items: center; justify-content: center;
-        z-index: 1000;
-      }
-      .begin-btn {
-        padding: 20px 40px; border-radius: 99px; border: 2px solid #fb7185;
-        background: rgba(225, 29, 72, 0.1); color: #fecdd3;
-        font-family: 'Inter', sans-serif; text-transform: uppercase;
-        letter-spacing: 0.2em; font-weight: bold; cursor: pointer;
-        box-shadow: 0 0 30px rgba(244, 63, 94, 0.3);
+      /* Very subtle loading text that stays hidden if app loads fast */
+      .loading-hint {
+        position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);
+        color: #333; font-family: sans-serif; font-size: 12px; z-index: -1;
       }
     </style>
   </head>
   <body>
     <div id="root">
-      <!-- This button shows immediately while the app loads -->
-      <div id="loading-overlay">
-        <button class="begin-btn">Begin Experience</button>
-      </div>
+      <div class="loading-hint">Loading...</div>
     </div>
-    <!-- NO leading slash - this is the fix for refresh issues -->
-    <script type="module" src="src/main.tsx"></script>
+    <!-- Load the app directly - Vite handles the rest -->
+    <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>
