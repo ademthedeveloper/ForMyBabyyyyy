@@ -261,15 +261,6 @@ function EnvelopeScene({ onOpen }: { onOpen: () => void }) {
               <div className="h-[1px] bg-white/10 w-1/2" />
             </div>
 
-            {/* Heart seal or lock icon */}
-            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-10 drop-shadow-lg">
-              {isOpen ? (
-                <span className="text-5xl md:text-6xl animate-heart-beat">❤️</span>
-              ) : (
-                <span className="text-5xl md:text-6xl">🔒</span>
-              )}
-            </div>
-
             {/* Glow from inside when opened */}
             {showGlow && (
               <div
@@ -300,6 +291,21 @@ function EnvelopeScene({ onOpen }: { onOpen: () => void }) {
                 boxShadow: isOpen ? 'none' : '0 8px 30px rgba(225, 29, 72, 0.2)',
               }}
             />
+          </div>
+
+          {/* Heart seal or lock icon - Moved outside and higher Z-index */}
+          <div
+            className="absolute left-1/2 -translate-x-1/2 z-30 drop-shadow-2xl transition-all duration-700"
+            style={{
+              top: isOpen ? '20%' : '45%',
+              opacity: transitioning ? 0 : 1,
+            }}
+          >
+            {isOpen ? (
+              <span className="text-5xl md:text-6xl animate-heart-beat">❤️</span>
+            ) : (
+              <span className="text-5xl md:text-6xl">🔒</span>
+            )}
           </div>
         </div>
       </div>
