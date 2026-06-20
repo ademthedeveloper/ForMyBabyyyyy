@@ -5,8 +5,8 @@ import path from "path";
 
 // https://vitejs.dev/config/
 export default defineConfig({
-  // Use relative base for maximum compatibility on all devices/hosts
-  base: "./",
+  // This MUST match your repository name exactly
+  base: "/ForMyBabyyyyy/",
   plugins: [react(), tailwindcss()],
   resolve: {
     alias: {
@@ -16,7 +16,5 @@ export default defineConfig({
   build: {
     outDir: "dist",
     assetsDir: "assets",
-    // Use esbuild (default) instead of terser to avoid missing dependency error
-    minify: "esbuild",
   },
 });
