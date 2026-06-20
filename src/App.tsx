@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback, useMemo, useRef } from 'react';
+import React, { useState, useEffect, useCallback, useMemo, useRef } from 'react';
 
 type Scene = 'intro' | 'envelope' | 'letter';
 
@@ -261,15 +261,6 @@ function EnvelopeScene({ onOpen }: { onOpen: () => void }) {
               <div className="h-[1px] bg-white/10 w-1/2" />
             </div>
 
-            {/* Heart seal or lock icon */}
-            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-10 drop-shadow-lg">
-              {isOpen ? (
-                <span className="text-5xl md:text-6xl animate-heart-beat">❤️</span>
-              ) : (
-                <span className="text-5xl md:text-6xl">🔒</span>
-              )}
-            </div>
-
             {/* Glow from inside when opened */}
             {showGlow && (
               <div
@@ -297,9 +288,18 @@ function EnvelopeScene({ onOpen }: { onOpen: () => void }) {
               style={{
                 clipPath: 'polygon(0 0, 50% 100%, 100% 0)',
                 background: 'linear-gradient(180deg, #be123c 0%, #9f1239 60%, #881337 100%)',
-                boxShadow: isOpen ? 'none' : '0 8px 30px rgba(225, 29, 72, 0.2)',
+                boxShadow: isOpen ? 'none' : '0 8px 30px rgba(225, 29, 72, 0.25)',
               }}
             />
+          </div>
+
+          {/* Heart seal or lock icon - placed over the flap and body */}
+          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-30 drop-shadow-lg pointer-events-none">
+            {isOpen ? (
+              <span className="text-5xl md:text-6xl animate-heart-beat">❤️</span>
+            ) : (
+              <span className="text-5xl md:text-6xl">🔒</span>
+            )}
           </div>
         </div>
       </div>
@@ -513,112 +513,14 @@ function LoveLetterSection() {
 }
 
 /* ================================================================
-   PHOTO GALLERY
+   THEATER CURTAIN
    ================================================================ */
-function PhotoCard({
-  src,
-  label,
-  gradient,
-}: {
-  src: string;
-  label: string;
-  gradient: string;
-}) {
-  const [imgError, setImgError] = useState(false);
-
+function TheaterCurtain({ isOpen }: { isOpen: boolean }) {
   return (
-    <div className="group relative overflow-hidden rounded-2xl cursor-pointer animate-photo-glow">
-      <div className={`aspect-[4/5] overflow-hidden rounded-2xl relative ${gradient}`}>
-        {!imgError ? (
-          <img
-            src={src}
-            alt={label}
-            className="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-110"
-            loading="lazy"
-            onError={() => setImgError(true)}
-          />
-        ) : (
-          <div className="absolute inset-0 flex flex-col items-center justify-center">
-            <span className="text-5xl mb-3">📸</span>
-            <span className="font-dancing text-rose-300/60 text-base">{label}</span>
-          </div>
-        )}
-
-        {/* Gradient overlay */}
-        <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent opacity-60 group-hover:opacity-40 transition-opacity duration-500" />
-      </div>
-
-      {/* Label */}
-      <div className="absolute bottom-0 left-0 right-0 p-5">
-        <p className="font-dancing text-lg md:text-xl text-rose-200 text-center drop-shadow-lg">
-          {label}
-        </p>
-      </div>
-
-      {/* Hover glow */}
-      <div
-        className="absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"
-        style={{ boxShadow: 'inset 0 0 50px rgba(225, 29, 72, 0.25)' }}
-      />
+    <div className="curtain-container">
+      <div className={`curtain-left ${isOpen ? 'open' : ''}`} />
+      <div className={`curtain-right ${isOpen ? 'open' : ''}`} />
     </div>
-  );
-}
-
-function PhotoGallery() {
-  const [visible, setVisible] = useState(false);
-
-  useEffect(() => {
-    const timer = setTimeout(() => setVisible(true), 500);
-    return () => clearTimeout(timer);
-  }, []);
-
-  // ============================================================
-  // 📸 TO CHANGE PHOTOS:
-  // 1. Replace the file in the "public" folder:
-  //    - public/photo1.jpg → your first photo
-  //    - public/photo2.jpg → your second photo
-  //    - public/photo3.jpg → your third photo
-  // 2. Make sure the filenames match exactly (photo1.jpg, photo2.jpg, photo3.jpg)
-  // 3. The photos will automatically load from the public folder
-  // ============================================================
-  const photos = [
-    { src: '/photo1.jpg', label: 'Our First Memory', gradient: 'bg-gradient-to-br from-rose-950 via-pink-900/50 to-purple-950' },
-    { src: '/photo2.jpg', label: 'Our Adventure', gradient: 'bg-gradient-to-br from-purple-950 via-indigo-900/50 to-blue-950' },
-    { src: '/photo3.jpg', label: 'Us Together', gradient: 'bg-gradient-to-br from-red-950 via-rose-900/50 to-pink-950' },
-  ];
-
-  return (
-    <section className="py-24 flex flex-col items-center justify-center px-5">
-      <h3
-        className="font-playfair text-2xl md:text-3xl text-white/85 mb-14 text-center"
-        style={{
-          opacity: visible ? 1 : 0,
-          transform: visible ? 'translateY(0)' : 'translateY(20px)',
-          transition: 'all 1s ease-out',
-        }}
-      >
-        Our Moments
-      </h3>
-
-      <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 md:gap-8 max-w-4xl w-full">
-        {photos.map((photo, i) => (
-          <div
-            key={i}
-            style={{
-              opacity: visible ? 1 : 0,
-              transform: visible ? 'translateY(0)' : 'translateY(30px)',
-              transition: `all 0.8s ease-out ${0.3 + i * 0.2}s`,
-            }}
-          >
-            <PhotoCard
-              src={photo.src}
-              label={photo.label}
-              gradient={photo.gradient}
-            />
-          </div>
-        ))}
-      </div>
-    </section>
   );
 }
 
@@ -704,12 +606,21 @@ function Footer() {
 export default function App() {
   const [scene, setScene] = useState<Scene>('intro');
   const [transitioning, setTransitioning] = useState(false);
+  const [curtainsOpen, setCurtainsOpen] = useState(false);
 
   const transitionTo = useCallback((newScene: Scene) => {
     setTransitioning(true);
     setTimeout(() => {
       setScene(newScene);
       window.scrollTo(0, 0);
+
+      // If we're going to the letter, trigger curtain opening
+      if (newScene === 'letter') {
+        setTimeout(() => setCurtainsOpen(true), 500);
+      } else {
+        setCurtainsOpen(false);
+      }
+
       setTimeout(() => setTransitioning(false), 100);
     }, 1200);
   }, []);
@@ -724,6 +635,9 @@ export default function App() {
 
   return (
     <div className="relative min-h-screen bg-black overflow-x-hidden">
+      {/* Theater Curtain Overlay */}
+      {scene === 'letter' && <TheaterCurtain isOpen={curtainsOpen} />}
+
       {/* Global subtle hearts */}
       {scene !== 'intro' && <FloatingHearts count={5} />}
 
@@ -757,7 +671,6 @@ export default function App() {
 
             <div className="relative z-10">
               <LoveLetterSection />
-              <PhotoGallery />
               <MusicButton />
               <Footer />
             </div>
