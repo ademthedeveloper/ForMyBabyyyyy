@@ -5,8 +5,8 @@ import path from "path";
 
 // https://vitejs.dev/config/
 export default defineConfig({
-  // This MUST match your repository name exactly
-  base: "/ForMyBabyyyyy/",
+  // Use relative base for maximum compatibility on all hosts
+  base: "./",
   plugins: [react(), tailwindcss()],
   resolve: {
     alias: {
