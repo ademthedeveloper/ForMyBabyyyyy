@@ -532,13 +532,13 @@ function PhotoCard({
   const [imgError, setImgError] = useState(false);
 
   return (
-    <div className="group relative overflow-hidden rounded-2xl cursor-pointer animate-photo-glow">
-      <div className={`aspect-[4/5] overflow-hidden rounded-2xl relative ${gradient}`}>
+    <div className="group relative overflow-hidden rounded-2xl cursor-pointer animate-photo-glow bg-black/40">
+      <div className={`aspect-auto min-h-[300px] overflow-hidden rounded-2xl relative flex items-center justify-center ${gradient}`}>
         {!imgError ? (
           <img
             src={src}
             alt={label}
-            className="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-110"
+            className="w-full h-auto max-h-[500px] object-contain transition-transform duration-700 ease-out group-hover:scale-105"
             loading="lazy"
             onError={() => setImgError(true)}
           />
@@ -587,9 +587,9 @@ function PhotoGallery() {
   // 3. The photos will automatically load from the public folder
   // ============================================================
   const photos = [
-    { src: 'photo1.jpg', label: 'Our First Memory', gradient: 'bg-gradient-to-br from-rose-950 via-pink-900/50 to-purple-950' },
-    { src: 'photo2.jpg', label: 'Our Adventure', gradient: 'bg-gradient-to-br from-purple-950 via-indigo-900/50 to-blue-950' },
-    { src: 'photo3.jpg', label: 'Us Together', gradient: 'bg-gradient-to-br from-red-950 via-rose-900/50 to-pink-950' },
+    { src: '/ForMyBabyyyyy/photo1.jpg', label: 'Our First Memory', gradient: 'bg-gradient-to-br from-rose-950 via-pink-900/50 to-purple-950' },
+    { src: '/ForMyBabyyyyy/photo2.jpg', label: 'Our Adventure', gradient: 'bg-gradient-to-br from-purple-950 via-indigo-900/50 to-blue-950' },
+    { src: '/ForMyBabyyyyy/photo3.jpg', label: 'Us Together', gradient: 'bg-gradient-to-br from-red-950 via-rose-900/50 to-pink-950' },
   ];
 
   return (
