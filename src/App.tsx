@@ -530,8 +530,10 @@ function PhotoCard({
   gradient: string;
 }) {
   const [imgError, setImgError] = useState(false);
+
+  // Use a reliable way to get the base URL
   const baseUrl = import.meta.env.BASE_URL || '/';
-  const finalSrc = src.startsWith('http') ? src : `${baseUrl}${src.replace('./', '')}`;
+  const finalSrc = src.startsWith('http') ? src : `${baseUrl}${src}`.replace(/\/\/+/g, '/');
 
   return (
     <div className="group relative overflow-hidden rounded-2xl cursor-pointer animate-photo-glow bg-white/5 border border-white/10">
