@@ -531,40 +531,42 @@ function PhotoCard({
 }) {
   const [imgError, setImgError] = useState(false);
 
+  // Create the correct URL for GitHub Pages
+  const baseUrl = import.meta.env.BASE_URL || '/';
+  const cleanBase = baseUrl.endsWith('/') ? baseUrl : `${baseUrl}/`;
+  const cleanSrc = src.startsWith('/') ? src.slice(1) : src;
+  const finalSrc = cleanBase + cleanSrc;
+
   return (
-    <div className="group relative overflow-hidden rounded-2xl cursor-pointer animate-photo-glow bg-black/40">
-      <div className={`aspect-auto min-h-[300px] overflow-hidden rounded-2xl relative flex items-center justify-center ${gradient}`}>
+    <div className="group relative overflow-hidden rounded-2xl cursor-pointer animate-photo-glow bg-white/5 border border-white/10">
+      <div className={`relative flex flex-col ${gradient}`}>
         {!imgError ? (
           <img
-            src={src}
+            src={finalSrc}
             alt={label}
-            className="w-full h-auto max-h-[500px] object-contain transition-transform duration-700 ease-out group-hover:scale-105"
+            className="w-full h-auto block transition-transform duration-700 ease-out group-hover:scale-105"
+            style={{ minHeight: '200px' }}
             loading="lazy"
             onError={() => setImgError(true)}
           />
         ) : (
-          <div className="absolute inset-0 flex flex-col items-center justify-center">
+          <div className="flex flex-col items-center justify-center p-12 bg-rose-950/20 min-h-[300px]">
             <span className="text-5xl mb-3">📸</span>
-            <span className="font-dancing text-rose-300/60 text-base">{label}</span>
+            <span className="font-dancing text-rose-300/60 text-base">Image not found</span>
+            <code className="text-[10px] text-white/30 mt-4 break-all px-4 text-center">{finalSrc}</code>
           </div>
         )}
 
         {/* Gradient overlay */}
-        <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent opacity-60 group-hover:opacity-40 transition-opacity duration-500" />
-      </div>
+        <div className="absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-black/80 to-transparent opacity-80" />
 
-      {/* Label */}
-      <div className="absolute bottom-0 left-0 right-0 p-5">
-        <p className="font-dancing text-lg md:text-xl text-rose-200 text-center drop-shadow-lg">
-          {label}
-        </p>
+        {/* Label */}
+        <div className="absolute bottom-0 left-0 right-0 p-4">
+          <p className="font-dancing text-lg md:text-xl text-rose-100 text-center drop-shadow-lg">
+            {label}
+          </p>
+        </div>
       </div>
-
-      {/* Hover glow */}
-      <div
-        className="absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"
-        style={{ boxShadow: 'inset 0 0 50px rgba(225, 29, 72, 0.25)' }}
-      />
     </div>
   );
 }
@@ -587,9 +589,9 @@ function PhotoGallery() {
   // 3. The photos will automatically load from the public folder
   // ============================================================
   const photos = [
-    { src: '/ForMyBabyyyyy/photo1.jpg', label: 'Our First Memory', gradient: 'bg-gradient-to-br from-rose-950 via-pink-900/50 to-purple-950' },
-    { src: '/ForMyBabyyyyy/photo2.jpg', label: 'Our Adventure', gradient: 'bg-gradient-to-br from-purple-950 via-indigo-900/50 to-blue-950' },
-    { src: '/ForMyBabyyyyy/photo3.jpg', label: 'Us Together', gradient: 'bg-gradient-to-br from-red-950 via-rose-900/50 to-pink-950' },
+    { src: 'photo1.jpg', label: 'Our First Memory', gradient: 'bg-gradient-to-br from-rose-950/40 via-pink-900/20 to-purple-950/40' },
+    { src: 'photo2.jpg', label: 'Our Adventure', gradient: 'bg-gradient-to-br from-purple-950/40 via-indigo-900/20 to-blue-950/40' },
+    { src: 'photo3.jpg', label: 'Us Together', gradient: 'bg-gradient-to-br from-red-950/40 via-rose-900/20 to-pink-950/40' },
   ];
 
   return (
