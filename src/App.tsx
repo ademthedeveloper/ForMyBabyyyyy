@@ -28,6 +28,42 @@ const letterParagraphs = [
 ];
 
 /* ================================================================
+   THEATER CURTAINS
+   ================================================================ */
+function TheaterCurtains({ isOpen }: { isOpen: boolean }) {
+  return (
+    <>
+      {/* Left Curtain */}
+      <div
+        className="fixed top-0 left-0 bottom-0 w-1/2 z-[150] transition-transform duration-[2000ms] ease-in-out"
+        style={{
+          transform: isOpen ? 'translateX(-100%)' : 'translateX(0)',
+          background: 'linear-gradient(to right, #4c0519, #9f1239, #881337, #4c0519)',
+          boxShadow: '5px 0 50px rgba(0,0,0,0.8)',
+        }}
+      >
+        <div className="absolute inset-0 opacity-20" style={{
+          background: 'repeating-linear-gradient(90deg, transparent, transparent 30px, #000 60px)',
+        }} />
+      </div>
+      {/* Right Curtain */}
+      <div
+        className="fixed top-0 right-0 bottom-0 w-1/2 z-[150] transition-transform duration-[2000ms] ease-in-out"
+        style={{
+          transform: isOpen ? 'translateX(100%)' : 'translateX(0)',
+          background: 'linear-gradient(to left, #4c0519, #9f1239, #881337, #4c0519)',
+          boxShadow: '-5px 0 50px rgba(0,0,0,0.8)',
+        }}
+      >
+        <div className="absolute inset-0 opacity-20" style={{
+          background: 'repeating-linear-gradient(-90deg, transparent, transparent 30px, #000 60px)',
+        }} />
+      </div>
+    </>
+  );
+}
+
+/* ================================================================
    FLOATING HEARTS
    ================================================================ */
 function FloatingHearts({ count = 10, intense = false }: { count?: number; intense?: boolean }) {
@@ -433,7 +469,7 @@ function TypewriterText({
           className="inline-block ml-[2px] text-rose-400"
           style={{ animation: 'blink 1s step-end infinite' }}
         >
-
+          |
         </span>
       )}
     </span>
@@ -518,54 +554,6 @@ function LoveLetterSection() {
 }
 
 /* ================================================================
-   MUSIC BUTTON
-   ================================================================ */
-function MusicButton() {
-  const [hovered, setHovered] = useState(false);
-
-  // ============================================================
-  // 🎵 TO CHANGE THE SONG LINK:
-  // Change the href below to any YouTube or Spotify URL you want
-  // ============================================================
-  const songUrl = 'https://www.youtube.com/watch?v=VF-FGf_ZZiI';
-
-  return (
-    <section className="py-16 flex flex-col items-center justify-center px-5">
-      <div style={{ animation: 'fadeInUp 1s ease-out both' }}>
-        <a
-          href={songUrl}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="group inline-flex items-center gap-3 px-8 py-4 rounded-full glass-card
-                     hover:bg-white/10 transition-all duration-300 hover:scale-105 active:scale-95"
-          onMouseEnter={() => setHovered(true)}
-          onMouseLeave={() => setHovered(false)}
-          style={{
-            boxShadow: hovered
-              ? '0 0 35px rgba(225, 29, 72, 0.4), 0 0 70px rgba(225, 29, 72, 0.15)'
-              : '0 0 15px rgba(225, 29, 72, 0.15)',
-            transition: 'box-shadow 0.3s ease, transform 0.3s ease, background-color 0.3s ease',
-          }}
-        >
-          <span
-            className="text-2xl"
-            style={{ animation: hovered ? 'heartBeat 0.8s ease-in-out infinite' : 'none' }}
-          >
-            🎵
-          </span>
-          <span className="font-inter text-base md:text-lg text-rose-200 tracking-wider">
-            Play Our Song
-          </span>
-        </a>
-        <p className="mt-4 text-center font-inter text-xs text-white/25 tracking-wider">
-          Opens a special song on YouTube
-        </p>
-      </div>
-    </section>
-  );
-}
-
-/* ================================================================
    FOOTER
    ================================================================ */
 function Footer() {
@@ -600,6 +588,7 @@ export default function App() {
   const [scene, setScene] = useState<Scene>('intro');
   const [transitioning, setTransitioning] = useState(false);
   const [isStarted, setIsStarted] = useState(false);
+  const [curtainsOpen, setCurtainsOpen] = useState(false);
 
   const transitionTo = useCallback((newScene: Scene) => {
     setTransitioning(true);
@@ -611,19 +600,38 @@ export default function App() {
   }, []);
 
   const handleStart = () => {
+    // 1. Scene becomes intro and started is true (under curtains)
     setIsStarted(true);
+    // 2. Open curtains after a tiny delay
+    setTimeout(() => setCurtainsOpen(true), 100);
   };
 
   const handleIntroComplete = useCallback(() => {
-    transitionTo('envelope');
-  }, [transitionTo]);
+    // 1. Close curtains
+    setCurtainsOpen(false);
+    // 2. Wait for curtains to close, then change scene and open again
+    setTimeout(() => {
+      setScene('envelope');
+      window.scrollTo(0, 0);
+      setTimeout(() => setCurtainsOpen(true), 500);
+    }, 2000);
+  }, []);
 
   const handleEnvelopeOpen = useCallback(() => {
-    transitionTo('letter');
-  }, [transitionTo]);
+    // 1. Close curtains
+    setCurtainsOpen(false);
+    // 2. Wait for curtains to close, then change scene to letter and open again
+    setTimeout(() => {
+      setScene('letter');
+      window.scrollTo(0, 0);
+      setTimeout(() => setCurtainsOpen(true), 500);
+    }, 2000);
+  }, []);
 
   return (
     <div className="relative min-h-screen bg-black overflow-x-hidden">
+      <TheaterCurtains isOpen={curtainsOpen} />
+
       {!isStarted && (
         <div className="fixed inset-0 z-[200] bg-black flex items-center justify-center">
           <button
@@ -641,10 +649,10 @@ export default function App() {
       {/* Global subtle hearts */}
       {isStarted && scene !== 'intro' && <FloatingHearts count={5} />}
 
-      {/* Main scene */}
+      {/* Main content */}
       <div
         style={{
-          opacity: (transitioning || !isStarted) ? 0 : 1,
+          opacity: transitioning ? 0 : 1,
           transition: 'opacity 1.2s ease-in-out',
         }}
       >
@@ -671,7 +679,6 @@ export default function App() {
 
             <div className="relative z-10">
               <LoveLetterSection />
-              <MusicButton />
               <Footer />
             </div>
           </div>
